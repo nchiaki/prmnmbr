@@ -45,9 +45,10 @@ prime_search(unsigned long long mxvl, int fstmd, int hxot)
   prmvls = 0;
   lstprmvl = 0;
   for (bsvl=2; bsvl<=mxvl; bsvl++)
-  {
+  {/*指定上限値までの値について素数を求めていく*/
     prmvl = 0;
 
+    /*除数の開始値（準備）*/
     if (fstmd)
     {/*高速モード*/
       pmvlbp = (PRMVLBCK *)NEXT(&prime_root);
@@ -63,19 +64,20 @@ prime_search(unsigned long long mxvl, int fstmd, int hxot)
       dvsr = 2;
 
     while (dvsr <= bsvl)
-    {
+    {/*除数は素数判定値までの範囲*/
       if (!(bsvl % dvsr))
-      {
+      {/*割切れた*/
         if (!prmvl)
-          prmvl = bsvl;
+          prmvl = bsvl; /*最後に割切れたとしたらこれが素数*/
         else
         {
-          prmvl = 0;
+          prmvl = 0;  /*すでに割切れている場合は素数ではないので次へ*/
           break;
         }
       }
       if (fstmd)
-      {
+      {/*高速モード*/
+        /*次の除数はすでに素数と確定した値から適応する*/
         if (qisempty)
           dvsr++;
         else
@@ -91,10 +93,10 @@ prime_search(unsigned long long mxvl, int fstmd, int hxot)
         }
       }
       else
-        dvsr++;
+        dvsr++; /*除数は順次求めていく*/
     }
     if (prmvl)
-    {
+    {/*素数が決定していたらそれを出力*/
       prmvls++;
       sprintf(prmnmbbf, prmotfmt, prmvl);
       prmdgt = strlen(prmnmbbf);
@@ -108,7 +110,7 @@ prime_search(unsigned long long mxvl, int fstmd, int hxot)
       lstprmvl = prmvl;
 
       if (fstmd)
-      {
+      {/*高速モード時は確定した素数を次の除数として使用できるように保存する*/
         pmvlbp = (PRMVLBCK *)malloc(sizeof(PRMVLBCK));
         if (pmvlbp)
         {
