@@ -8,7 +8,7 @@ CFLAGS=-ggdb -Wall  $(DBGFLG)
 #LDFLAGS=-Xlinker --cref
 TARGETS=prmnm
 
-SRCS=main.c
+SRCS=main.c prmsub.c glblvl.c
 
 OBJS=$(SRCS:.c=.o)
 
